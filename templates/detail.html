@@ -1,0 +1,35 @@
+<head>
+    <title>編集ページ</title>
+</head>
+<body>
+    <h2>編集</h2>
+    
+    <p>{{.user.ID}}</p>
+    <p>{{.user.Name}}</p>
+    <p>{{.user.Age}}</p>
+    
+    <form method="post" action="/update/{{.books.ID}}">
+        <p>漫画名 <input type="text" name="name" size="30" value="{{.books.Contents}}" ></p>
+        <p>状態
+            <select name="status">
+                {{if eq .books.Status "まだ読んでない"}}
+                    <option value="まだ読んでいない" selected>まだ読んでない</option>
+                    <option value="読んでいる">読んでいる途中</option>
+                    <option value="完結">単行本完結</option>
+                {{else if eq .books.Status "読んでいる"}}
+                    <option value="まだ読んでない">まだ読んでない</option>
+                    <option value="読んでいる" selected>読んでいる途中</option>
+                    <option value="完結">単行本完結</option>
+                {{else}}
+                    <option value="まだ読んでない">まだ読んでいない</option>
+                    <option value="実行中">読んでいる途中</option>
+                    <option value="完結" selected>単行本完結</option>
+                {{end}}
+            </select>
+            <p>巻数 <input type="number" name="number" style="width: 40px;" value="{{.books.Number}}" ></p>
+            <p>作者名 <input type="text" name="author" style="width: 220px;"  value="{{.books.Author}}"></p>
+        </p>
+        <button type="submit">編集</button>
+    </form>
+    </body>
+    {{template "footer" .}}

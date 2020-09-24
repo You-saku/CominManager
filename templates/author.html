@@ -1,0 +1,21 @@
+    <head>
+        <title>作者情報一覧</title>
+    </head>
+    <body>
+        <link rel="stylesheet" href="assets/css/author.css">
+        <h2>作者情報</h2>
+        
+        <ol>{{ range .author }}
+            <li>
+                作者名 : {{.Author}}
+            </li>
+            {{end}}
+        </ol>
+        <p>下記のフォームで作者の絞り込みが可能です</p>
+        <form method="POST" action="/author_detail">
+            <p><input type="text" name="authorname" width="50px" placeholder="作者名を入力してください"></input></p>
+            <button type="submit">作者絞り込み</button>
+        </form>
+        <a href="/">漫画登録ページへ</a>
+    </body>
+    {{template "footer" .}}

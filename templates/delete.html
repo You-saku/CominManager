@@ -1,0 +1,20 @@
+<head>
+    <title>削除確認</title>
+</head>
+<body>
+    <h1>削除確認</h1>
+    <p>本当に削除しますか？</p>
+    <ul>
+        <li>漫画名： {{.books.Contents}}</li>
+        <li>状態： {{.books.Status}}</li>
+        <li>持っている巻数: {{.books.Number}}</li>
+        <li>作者名: {{.books.Author}}</li>
+        <li>作成時間： {{.books.CreatedAt}}</li>
+    </ul>
+    
+    <form method="post" action="/delete/{{.books.ID}}">
+        <button type="submit">削除</button>
+        <p><a href="/">戻る</a></p>
+    </form>
+    </body>
+    {{template "footer" .}}

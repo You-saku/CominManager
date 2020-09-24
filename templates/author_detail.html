@@ -1,0 +1,13 @@
+<head>
+    <title>{{.author.Author}}先生の作品一覧</title>
+</head>
+<link rel="stylesheet" href="assets/css/author_detail.css">
+<body>
+    <h2>【{{.author.Author}}】先生の作品</h2>
+    <ol>{{ range .info}}
+        <li>{{.Contents}}</li>
+        {{end}}
+    </ol>
+</body>
+<a href="/author">作者一覧ページへ</a><a href="/">漫画登録ページへ</a>
+{{template "footer" .}}

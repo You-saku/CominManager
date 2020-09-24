@@ -1,0 +1,34 @@
+<head>
+    <title>漫画情報一覧</title>
+</head>
+<body>
+    <link rel="stylesheet" href="assets/css/index.css">
+    <div class="img">
+        <img src="assets/images/title.png">
+    </div>
+    <h2>持っている漫画一覧</h2>
+    <p>＊ 編集可能です ＊</p>
+    <form method="post" action="/new">
+        <p>漫画名 <input type="text" name="name" size="30" placeholder="入力してください" ></p>
+        <p>状態
+            <select name="status">
+                <option value="まだ読んでない">まだ読んでいない</option>
+                <option value="読んでいる">読んでいる途中</option>
+                <option value="完結">単行本完結</option>
+            </select>
+        </p>
+        <p>現在の巻数 <input type="number" name="number" style="width: 40px;" placeholder="0" ></p>
+        <p>作者名 <input type="text" name="author" style="width: 220px;" placeholder="入力してください"></p>
+        <button type="submit">登録</button>
+    </form>
+    <ol class="list">
+        {{ range .books }}
+            <li>【漫画名】：{{ .Contents }}　【状態】：{{ .Status }}　 【今持っているのは】 : {{.Number}}巻　【作者名】 : {{.Author}} 先生  
+                <label><a href="/detail/{{.ID}}">編集</a></label>
+                <label><a href="/delete_check/{{.ID}}">削除</a></label>
+            </li>
+        {{end}}
+    </ol>
+    </body>
+    <a href="/author">あなたの登録した作者一覧</a>
+    {{template "footer" .}}

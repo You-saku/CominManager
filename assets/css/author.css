@@ -1,0 +1,39 @@
+h2{
+    color: orange;
+}
+
+ol{
+    counter-reset:list;
+    list-style-type:none;
+    font: 14px/1.6 'arial narrow', sans-serif;
+    padding: 0px;
+    border: solid 1px #2d8fdd;
+}
+
+ol li{
+    position:relative;
+    line-height: 30px;
+    margin: 7px 0 7px 40px;
+    padding-left: 10px;
+    font-weight: bold;
+    font-size:14px;
+    margin-bottom: 15px;
+}
+
+ol li::before{
+    counter-increment: list;
+    content: counter(list);
+    position: absolute;
+    left: -35px;
+    width: 30px;
+    height: 30px;
+    background: #2d8fdd;
+    text-align: center;
+    color: black;
+    top: 50%;
+    -moz-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
