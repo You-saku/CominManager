@@ -6,6 +6,8 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
 	"strconv"
+	//追加(ログイン)
+	"golang.org/x/crypto/bcrypt"
 )
 
 //databaseの定義
@@ -15,6 +17,24 @@ type Books struct {
 	Status   string
 	Number   int
 	Author   string
+}
+
+//ユーザー情報
+type User struct {
+	gorm.Model
+	Username string
+	Password string
+}
+
+// PasswordEncrypt パスワードをhash化
+func PasswordEncrypt(password string) (string, error) {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(hash), err
+}
+
+// CompareHashAndPassword hashと非hashパスワード比較
+func CompareHashAndPassword(hash, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 }
 
 //データベース初期化
@@ -126,6 +146,18 @@ func dbAuthorDetail(name string) []Books {
 	return author_detail
 }
 
+//ユーザー情報取得
+func getUser(username string) User {
+	db, err := gorm.Open("sqlite3", "user.sqlite3")
+	if err != nil {
+		panic("データベース開けず！(dbGetOne())")
+	}
+	var user User
+	db.Where("username = ?", username).First(&user)
+	db.Close()
+	return user
+}
+
 func main() {
 	// router. でとにかく書けばルーティングはできる。
 	router := gin.Default()
@@ -134,7 +166,25 @@ func main() {
 
 	dbInit()
 
+	//追加
 	router.GET("/", func(ctx *gin.Context) {
+		ctx.HTML(200, "login.html", gin.H{})
+	})
+
+	//ログイン認証
+	router.POST("/login", func(ctx *gin.Context) {
+		//username := ctx.PostForm("username")
+		DBpassword := getUser(ctx.PostForm("username")).Password
+		FORMpassword := ctx.PostForm("password")
+
+		if err := CompareHashAndPassword(DBpassword, FORMpassword); err != nil {
+			ctx.HTML(200, "fail.html", gin.H{})
+		} else {
+			ctx.Redirect(302, "/main")
+		}
+	})
+
+	router.GET("/main", func(ctx *gin.Context) {
 		books := dbGetAll()
 		ctx.HTML(200, "index.html", gin.H{
 			"books": books,
@@ -174,7 +224,7 @@ func main() {
 		number, _ := strconv.Atoi(num)
 		author := ctx.PostForm("author")
 		dbUpdate(id, name, status, number, author)
-		ctx.Redirect(302, "/")
+		ctx.Redirect(302, "/main")
 	})
 
 	router.GET("/delete_check/:id", func(ctx *gin.Context) {

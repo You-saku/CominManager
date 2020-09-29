@@ -1,0 +1,15 @@
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン認証</title>
+</head>
+<link rel="stylesheet" href="assets/css/login.css">
+<body>
+    <h1>漫画管理アプリへようこそ</h1>
+    <h2>まずはログインをお願い致します</h2>
+    <form action="/login" method="post">
+        <p>ユーザー名 :<input type="text" name="username" placeholder=""/></p>
+        <p>パスワード :<input type="text" name="password" placeholder=""/></p>
+        <button type="submit">ログイン</button>
+    </form>
+</body>
+{{template "footer" .}}
