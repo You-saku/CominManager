@@ -2,10 +2,12 @@ package main
 
 import (
 	//基本的にここに書いたものは使わないといけない...らしい...
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
-	"strconv"
+
 	//追加(ログイン)
 	"golang.org/x/crypto/bcrypt"
 )
@@ -199,7 +201,7 @@ func main() {
 		author := ctx.PostForm("author")
 
 		dbInsert(name, status, number, author)
-		ctx.Redirect(302, "/")
+		ctx.Redirect(302, "/main")
 	})
 
 	router.GET("/detail/:id", func(ctx *gin.Context) {
@@ -248,7 +250,7 @@ func main() {
 		}
 		dbDelete(id)
 
-		ctx.Redirect(302, "/")
+		ctx.Redirect(302, "/main")
 	})
 
 	//ここから先は追加
